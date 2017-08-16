@@ -13,6 +13,8 @@ class Vocabulary(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     word = db.Column(db.String(20))
+    word_explain = db.Column(db.String(100))
+    is_remember = db.Column(db.Boolean, default=True)
 
 # app.app_context().push()
 # db.create_all()
