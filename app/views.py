@@ -18,9 +18,9 @@ def word_add():
 @app.route('/words', methods=['GET'])
 def words_get():
     words = db.session.query(Vocabulary).filter_by(user_id=1, is_remember=False).all()
-    words_dict = dict([(word.id, dict(word=word.word,
+    words_dict = dict(((word.id, dict(word=word.word,
                                       word_explain=word.word_explain,
-                                      is_remember=word.is_remember)) for word in words])
+                                      is_remember=word.is_remember)) for word in words))
     return json.dumps(words_dict)
 
 
