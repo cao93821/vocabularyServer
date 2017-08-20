@@ -1,5 +1,5 @@
 from app import app, db
-from flask import request
+from flask import request, abort
 from .models import Vocabulary, User
 import json
 
@@ -30,3 +30,31 @@ def word_remember(word_id):
     word.is_remember = True
     db.session.commit()
     return 'success'
+
+
+@app.route('/register', methods=['POST'])
+def register():
+    request_content = json.loads(request.json)
+    if request_content['username'] and request_content['password']:
+        if db.session.query(User).filter_by(user_name=request_content['username']).first():
+            abort(404)
+        else:
+            new_user = User(user_name=request_content['username'], password=request_content['password'])
+            db.session.add(new_user)
+            db.session.commit()
+            token = db.session.query(User).filter_by(user_name=request_content['username']).first().token_generate()
+            return json.dumps({'token': token.decode('utf-8')})
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    request_content = json.loads(request.json)
+    user = db.session.query(User).filter_by(user_name=request_content['username']).first()
+    if not user.verify_password(request_content['password']):
+        abort(403)
+    else:
+        return json.dumps({'token': user.token_generate().decode('utf-8')})
+
+
+
+

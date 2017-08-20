@@ -1,0 +1,11 @@
+MANIFEST.in
+fabfile.py
+run.py
+setup.py
+app/__init__.py
+app/models.py
+app/views.py
+vocabulary.egg-info/PKG-INFO
+vocabulary.egg-info/SOURCES.txt
+vocabulary.egg-info/dependency_links.txt
+vocabulary.egg-info/top_level.txt
