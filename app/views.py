@@ -37,7 +37,7 @@ def register():
     request_content = json.loads(request.json)
     if request_content['username'] and request_content['password']:
         if db.session.query(User).filter_by(user_name=request_content['username']).first():
-            abort(404)
+            abort(403)
         else:
             new_user = User(user_name=request_content['username'], password=request_content['password'])
             db.session.add(new_user)

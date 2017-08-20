@@ -23,4 +23,9 @@ def deploy():
         # run('venv/bin/python run.py db init')
         # run('venv/bin/python run.py db migrate')
         # run('venv/bin/python run.py db upgrade')
-        run('venv/bin/python run.py runserver -h "0.0.0.0" &')
+        # run('nohup venv/bin/python run.py runserver -h "0.0.0.0" &')
+        pids = run("ps aux | grep 0.0.0.0:5000 | grep -v grep | awk '{print $2}'")
+        if pids:
+            pid_list = pids.split('\r\n')
+            run('kill -9 {}'.format(pid_list[0]))
+        run('uwsgi --http 0.0.0.0:5000 --wsgi-file run.py --callable app --home=venv --daemonize uwsgi.log')
