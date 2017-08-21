@@ -24,6 +24,8 @@ def deploy():
         # run('venv/bin/python run.py db migrate')
         # run('venv/bin/python run.py db upgrade')
         # run('nohup venv/bin/python run.py runserver -h "0.0.0.0" &')
+
+        # awk真的好用
         pids = run("ps aux | grep 0.0.0.0:5000 | grep -v grep | awk '{print $2}'")
         if pids:
             pid_list = pids.split('\r\n')
