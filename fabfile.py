@@ -30,4 +30,4 @@ def deploy():
         if pids:
             pid_list = pids.split('\r\n')
             run('kill -9 {}'.format(pid_list[0]))
-        run('uwsgi --http 0.0.0.0:5000 --wsgi-file run.py --callable app --home=venv --daemonize uwsgi.log')
+        run('uwsgi uwsgi_config.ini')
