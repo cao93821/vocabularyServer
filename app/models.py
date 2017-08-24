@@ -1,5 +1,5 @@
 from app import db, app
-from itsdangerous import TimedJSONWebSignatureSerializer
+from itsdangerous import TimedJSONWebSignatureSerializer, BadSignature, SignatureExpired
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import current_app
 
@@ -25,6 +25,15 @@ class User(db.Model):
     def token_generate(self, expiration=3600):
         signature = TimedJSONWebSignatureSerializer(current_app.config['SECRET_KEY'], expiration)
         return signature.dumps({'user_id': self.user_id})
+
+    @staticmethod
+    def token_loads(token):
+        signature = TimedJSONWebSignatureSerializer(current_app.config['SECRET_KEY'])
+        try:
+            user_id = signature.loads(token)['user_id']
+        except BadSignature or SignatureExpired:
+            return False
+        return user_id
 
 
 class Vocabulary(db.Model):

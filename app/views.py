@@ -17,7 +17,11 @@ def word_add():
 
 @app.route('/words', methods=['GET'])
 def words_get():
-    words = db.session.query(Vocabulary).filter_by(user_id=1, is_remember=False).all()
+    token = json.loads(request.json)['token']
+    user_id = User.token_loads(token)
+    if not user_id:
+        abort(404)
+    words = db.session.query(Vocabulary).filter_by(user_id=user_id, is_remember=False).all()
     words_dict = dict(((word.id, dict(word=word.word,
                                       word_explain=word.word_explain,
                                       is_remember=word.is_remember)) for word in words))
@@ -50,9 +54,9 @@ def register():
 def login():
     request_content = json.loads(request.json)
     user = db.session.query(User).filter_by(user_name=request_content['username']).first()
-    if not user.verify_password(request_content['password']):
-        abort(403)
-    else:
+    if user:
+        if not user.verify_password(request_content['password']):
+            abort(403)
         return json.dumps({'token': user.token_generate().decode('utf-8')})
 
 
