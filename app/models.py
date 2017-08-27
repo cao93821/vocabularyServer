@@ -1,4 +1,4 @@
-from app import db, app
+from app import db
 from itsdangerous import TimedJSONWebSignatureSerializer, BadSignature, SignatureExpired
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import current_app
@@ -43,6 +43,3 @@ class Vocabulary(db.Model):
     word = db.Column(db.String(20))
     word_explain = db.Column(db.Text)
     is_remember = db.Column(db.Boolean, default=False)
-
-# app.app_context().push()
-# db.create_all()
