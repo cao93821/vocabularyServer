@@ -1,4 +1,4 @@
-from app import db, app
+from app import db
 from itsdangerous import TimedJSONWebSignatureSerializer, BadSignature, SignatureExpired
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import current_app
