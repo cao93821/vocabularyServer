@@ -43,6 +43,3 @@ class Vocabulary(db.Model):
     word = db.Column(db.String(20))
     word_explain = db.Column(db.Text)
     is_remember = db.Column(db.Boolean, default=False)
-
-# app.app_context().push()
-# db.create_all()
