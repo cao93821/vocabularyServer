@@ -1,8 +1,10 @@
+import unittest
+import sys
+
 from app import db, create_app
 from flask_migrate import MigrateCommand, Migrate
 from flask_script import Manager
-import unittest
-import sys
+
 
 app = create_app()
 migrate = Migrate(app, db)
