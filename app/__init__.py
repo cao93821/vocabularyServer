@@ -18,8 +18,10 @@ def create_app(config='develop'):
     else:
         app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:yiwen517112@139.196.77.131/vocabulary_test'
     app.config['SECRET_KEY'] = 'yiwen517112'
-    from .views import main
+    from app.views.api_version130 import main
+    from app.views.api_version140 import api_version140
     app.register_blueprint(main)
+    app.register_blueprint(api_version140, url_prefix='/api_version140')
 
     return app
 

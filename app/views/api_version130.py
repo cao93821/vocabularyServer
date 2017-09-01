@@ -4,7 +4,7 @@ import json
 
 from app import db
 from flask import request, abort, Blueprint
-from .models import Vocabulary, User
+from ..models import Vocabulary, User
 from sqlalchemy.exc import DBAPIError
 
 main = Blueprint('main', __name__)
@@ -83,7 +83,7 @@ def word_add():
 def words_get():
     """获取自己单词本当中的所有单词"""
     token = json.loads(request.json)['token']
-    user_id = User.token_loads(token)
+    user_id = User.token_loads(token)[0]
     if not user_id:
         return 'wrong token', 404
     user = db.session.query(User).filter_by(user_id=user_id).first()

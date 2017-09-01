@@ -1,6 +1,9 @@
-from app import db
+import time
+
 from itsdangerous import TimedJSONWebSignatureSerializer, BadSignature, SignatureExpired
 from werkzeug.security import generate_password_hash, check_password_hash
+
+from app import db
 from flask import current_app
 
 
@@ -28,7 +31,7 @@ class User(db.Model):
         """
         return check_password_hash(self.hash_password, password)
 
-    def token_generate(self, expiration=3600):
+    def token_generate(self, expiration=108000):
         """将秘钥和用户user_id进行序列化，生成一个有超时时间的token
 
         :param expiration: 超时时间，单位为秒
@@ -43,14 +46,22 @@ class User(db.Model):
         """将用户传递过来的token进行反序列化
 
         :param token: 用于反序列化的token™
-        :return: user_id(int) or False
+        :return1: 如果token有效，返回对应用户的user_id，反之返回None
+        :return2: 如果token有效且剩余时长短于54000s，返回True，反之返回False
+
+        version 1.4.0 修改了返回值类型
         """
         signature = TimedJSONWebSignatureSerializer(current_app.config['SECRET_KEY'])
         try:
-            user_id = signature.loads(token)['user_id']
+            payload, header = signature.loads(token, return_header=True)
         except BadSignature or SignatureExpired:
-            return False
-        return user_id
+            return None, False
+        user_id = payload['user_id']
+        expiration_time = header['exp']
+        # 为什么要用int强制类型转换，看看load方法的源码就知道了
+        if expiration_time - int(time.time()) <= 54000:
+            return user_id, False
+        return user_id, True
 
 
 class Vocabulary(db.Model):

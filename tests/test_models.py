@@ -53,8 +53,8 @@ class UserModelTestCase(unittest.TestCase):
         token1 = user1.token_generate()
         token2 = user1.token_generate(expiration=1)
         token3 = '123456'
-        self.assertTrue(User.token_loads(token1) == user1.user_id)
+        self.assertTrue(User.token_loads(token1) == (user1.user_id, True))
         time.sleep(2)
-        self.assertFalse(User.token_loads(token2))
-        self.assertFalse(User.token_loads(token3))
+        self.assertTrue(User.token_loads(token2) == (None, False))
+        self.assertTrue(User.token_loads(token3) == (None, False))
 
