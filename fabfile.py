@@ -26,7 +26,7 @@ def deploy():
         # run('nohup venv/bin/python run.py runserver -h "0.0.0.0" &')
 
         # awk真的好用
-        pids = run("ps aux | grep 0.0.0.0:5000 | grep -v grep | awk '{print $2}'")
+        pids = run("ps aux | grep uwsgi_config.ini | grep -v grep | awk '{print $2}'")
         if pids:
             pid_list = pids.split('\r\n')
             run('kill -9 {}'.format(pid_list[0]))

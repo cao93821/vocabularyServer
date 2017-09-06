@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block body %}
+    {{ super() }}
+
+    <div class="container">
+        <div class="jumbotron">
+            <h1>我的单词本</h1>
+            <p class="lead">欢迎来到猪猪单词本</p>
+        </div>
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>单词</th>
+                        <th>释义</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for index_number, word in words %}
+                    <tr>
+                        <td>{{ index_number + 1 }}</td>
+                        <td>{{ word.word }}</td>
+                        <td>{{ word.word_explain }}</td>
+                        <td><a href="{{ url_for('.remember', word_id=word.id) }}">记住了</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li {% if not pagination.has_prev %}class="disabled"{% endif %}>
+                        <a {% if not pagination.has_prev %}href="#"
+                           {% else %}href="{{ url_for('.vocabulary', user_id=1, page=pagination.page - 1) }}"
+                           {% endif %}aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% for page_number in pagination.iter_pages() %}
+                    <li {% if page_number == pagination.page %}class="active"{% endif %}><a href="{{ url_for('.vocabulary', user_id=1, page=page_number) }}">{{ page_number }}</a></li>
+                    {% endfor %}
+                    <li {% if not pagination.has_next %}class="disabled"{% endif %}>
+                        <a {% if not pagination.has_next %}href="#"
+                           {% else %}href="{{ url_for('.vocabulary', user_id=1, page=pagination.page + 1) }}"
+                           {% endif %}aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+{% endblock %}
