@@ -2,12 +2,13 @@ import time
 
 from itsdangerous import TimedJSONWebSignatureSerializer, BadSignature, SignatureExpired
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask import current_app
+from flask_login import UserMixin
 
 from app import db
-from flask import current_app
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = 'user'
     user_id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(20))
@@ -62,6 +63,9 @@ class User(db.Model):
         if expiration_time - int(time.time()) <= 54000:
             return user_id, False
         return user_id, True
+
+    def get_id(self):
+        return self.user_id
 
 
 class Vocabulary(db.Model):
