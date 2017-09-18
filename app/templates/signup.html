@@ -10,10 +10,16 @@
             <div class="form-group">
                 <label>用户名</label>
                 {{ form.user_name(class="form-control", placeholder="用户名") }}
+                {% for error in form.errors.user_name %}
+                <span class="help-block">{{ error }}</span>
+                {% endfor %}
             </div>
             <div class="form-group">
                 <label>密码</label>
                 {{ form.password(class="form-control", placeholder="密码") }}
+                {% for error in form.errors.user_name %}
+                <span class="help-block">{{ error }}</span>
+                {% endfor %}
             </div>
             {{ form.submit(class="btn btn-lg btn-primary btn-block") }}
         </form>

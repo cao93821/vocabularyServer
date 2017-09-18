@@ -1,7 +1,8 @@
+import time
 import unittest
+
 from app import create_app, db
 from app.models import User
-import time
 
 
 def user_data_generate():
@@ -14,10 +15,9 @@ def user_data_generate():
 
 class UserModelTestCase(unittest.TestCase):
     def setUp(self):
-        self.app = create_app(config='test')
+        self.app = create_app(config_name='test')
         self.app_context = self.app.app_context()
         self.app_context.push()
-        db.drop_all()
         db.create_all()
         user_data_generate()
 

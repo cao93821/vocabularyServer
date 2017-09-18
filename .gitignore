@@ -4,4 +4,7 @@ __pycache__/
 venv
 nohup.out
 *.pyc
+dist
+tmp
+vocabulary.egg-info
 

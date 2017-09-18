@@ -5,7 +5,7 @@ from flask import current_app
 
 class BasicsTestCase(unittest.TestCase):
     def setUp(self):
-        self.app = create_app(config='test')
+        self.app = create_app(config_name='test')
         self.app_context = self.app.app_context()
         self.app_context.push()
         db.drop_all()

@@ -21,10 +21,10 @@
                 <tbody>
                 {% for index_number, word in words %}
                     <tr>
-                        <td>{{ index_number + 1 }}</td>
+                        <td>{{ index_number }}</td>
                         <td>{{ word.word }}</td>
                         <td>{{ word.word_explain }}</td>
-                        <td><a href="{{ url_for('.remember', word_id=word.id) }}">记住了</a></td>
+                        <td><a href="{{ url_for('.remember', word_id=word.id, page=pagination.page) }}">记住了</a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
